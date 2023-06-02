@@ -4,7 +4,7 @@
         "outDir": "./dist/",
         "sourceMap": true,
         "target": "es2015",
-        "module": "ESNext",
+        "module": "esnext",
     
         // Rules for your code
         "strict": true,

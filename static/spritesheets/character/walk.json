@@ -1,0 +1,78 @@
+{
+  "frames": {
+    "walk_01.png": {
+      "frame": { "x": 0, "y": 0, "w": 48, "h": 48 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 48, "h": 48 },
+      "sourceSize": { "w": 48, "h": 48 }
+    },
+    "walk_02.png": {
+      "frame": { "x": 48, "y": 0, "w": 48, "h": 48 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 48, "h": 48 },
+      "sourceSize": { "w": 48, "h": 48 }
+    },
+    "walk_03.png": {
+      "frame": { "x": 96, "y": 0, "w": 48, "h": 48 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 48, "h": 48 },
+      "sourceSize": { "w": 48, "h": 48 }
+    },
+    "walk_04.png": {
+      "frame": { "x": 144, "y": 0, "w": 48, "h": 48 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 48, "h": 48 },
+      "sourceSize": { "w": 48, "h": 48 }
+    },
+    "walk_05.png": {
+      "frame": { "x": 192, "y": 0, "w": 48, "h": 48 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 48, "h": 48 },
+      "sourceSize": { "w": 48, "h": 48 }
+    },
+    "walk_06.png": {
+      "frame": { "x": 240, "y": 0, "w": 48, "h": 48 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 48, "h": 48 },
+      "sourceSize": { "w": 48, "h": 48 }
+    },
+    "walk_07.png": {
+      "frame": { "x": 288, "y": 0, "w": 48, "h": 48 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 48, "h": 48 },
+      "sourceSize": { "w": 48, "h": 48 }
+    },
+    "walk_08.png": {
+      "frame": { "x": 336, "y": 0, "w": 48, "h": 48 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 48, "h": 48 },
+      "sourceSize": { "w": 48, "h": 48 }
+    }
+  },
+  "animations": {
+    "walk": [
+      "walk_01.png",
+      "walk_02.png",
+      "walk_03.png",
+      "walk_04.png",
+      "walk_05.png",
+      "walk_06.png",
+      "walk_07.png",
+      "walk_08.png"
+    ]
+  },
+  "meta": {
+    "image": "walk.png",
+    "format": "RGBA8888",
+    "size": { "w": 384, "h": 48 },
+    "scale": "1"
+  }
+}
