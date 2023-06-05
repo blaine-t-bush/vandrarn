@@ -2,7 +2,7 @@ import { Application, Assets } from 'pixi.js'
 import { Character } from './Character'
 import { Hud } from './hud/Hud'
 import { Keyboard } from './Keyboard'
-import { LevelForest } from './Level'
+import { Forest } from './level/Forest'
 import { Scene } from './Scene'
 
 const baseLayerSpeed = 1.5;
@@ -16,7 +16,7 @@ const app = new Application({
 	height: 400
 });
 
-let level = new LevelForest();
+let level = new Forest();
 let character = new Character(150, 335, 6);
 let scenes: Array<Scene> = [];
 let hud = new Hud(app.stage.width, app.stage.height);
@@ -63,6 +63,12 @@ Assets.load([
 	"backgrounds/forest/layer_0009.png",
 	"backgrounds/forest/layer_0010.png",
 	"backgrounds/forest/layer_0011.png",
+	"backgrounds/hill/layer_0001.png",
+	"backgrounds/hill/layer_0002.png",
+	"backgrounds/hill/layer_0003.png",
+	"backgrounds/hill/layer_0004.png",
+	"backgrounds/hill/layer_0005.png",
+	"backgrounds/hill/layer_0006.png",
 	// Character animations
 	"spritesheets/character/idle.json",
 	"spritesheets/character/walk.json",
@@ -70,7 +76,9 @@ Assets.load([
 ]).then(() => {
 	// Instantiate level.
 	// Create TilingSprites for each background.
+	console.log(level.backgrounds);
 	scenes = Scene.createScenes(level.backgrounds, baseLayerSpeed);
+	console.log(scenes);
 	for (let i = 0; i < scenes.length; i++) {
 		app.stage.addChild(scenes[i]);
 	}
