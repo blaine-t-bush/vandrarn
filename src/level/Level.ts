@@ -2,6 +2,7 @@ type Background = {z: number, paths: Array<string>};
 
 export class Level {
   public backgrounds: Array<Background> = [];
+  public groundOffset: number = 0;
 
   public addBackgrounds(background: Background): void {
     let existingBackgrounds: Background | undefined = this.backgrounds.find((val) => val.z === background.z);

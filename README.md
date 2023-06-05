@@ -6,11 +6,16 @@ Made with [PixiJS](https://pixijs.com/) with help from Milton Candelero's [PixiJ
 
 ### Background
 
-- Standardize image sizes or pass offsets & scale as arguments
+- [x] Standardize image sizes
 
 ### Journal
 
-- Generic button class with callback as parameter
-- Button to open journal
-- Flip between pages
-- Edit text on page (typewriter-style; no mouse/arrows/backspace, only typing)
+- [ ] Generic button class with callback as parameter
+- [ ] Button to open journal
+- [ ] Flip between pages
+- [ ] Edit text on page (typewriter-style; no mouse/arrows/backspace, only typing)
+
+## Assets
+
+- Character sprites by [ZeggyGames](https://zegley.itch.io/)
+- Backgrounds by [edermunizz](https://edermunizz.itch.io/)
