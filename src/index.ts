@@ -4,6 +4,7 @@ import { Hud } from './hud/Hud'
 import { Keyboard } from './Keyboard'
 import { WinterForest } from './level/WinterForest'
 import { Scene } from './Scene'
+import { Journal } from './ui/Journal'
 
 const baseLayerSpeed = 1.5;
 const screenWidth = 512;
@@ -23,6 +24,7 @@ let level = new WinterForest();
 let character = new Character(characterHorizontalOffset, screenHeight-level.groundOffset, 6);
 let scenes: Array<Scene> = [];
 let hud = new Hud(app.stage.width, app.stage.height);
+let journal = new Journal(screenWidth, screenHeight);
 
 function gameLoop(delta: number): void {
 	if (Keyboard.state.has("ShiftLeft") && Keyboard.state.get("ShiftLeft") && Keyboard.state.has("ArrowRight") && Keyboard.state.get("ArrowRight")) {
@@ -41,10 +43,6 @@ function gameLoop(delta: number): void {
 	}
 
 	hud.distanceCounter.updateCount(character.stepCount);
-
-	if (character.stepCount >= 100) {
-		hud.journal.show();
-	}
 }
 
 app.stage.sortableChildren = true;
@@ -93,7 +91,7 @@ Assets.load([
 ]).then(() => {
 	// Instantiate level.
 	// Create TilingSprites for each background.
-	scenes = Scene.createScenes(screenWidth, screenHeight, level.backgrounds, baseLayerSpeed);
+	scenes = Scene.createScenes(screenWidth, level.backgrounds, baseLayerSpeed);
 	for (let i = 0; i < scenes.length; i++) {
 		app.stage.addChild(scenes[i]);
 	}
@@ -102,6 +100,7 @@ Assets.load([
 	app.stage.addChild(character);
 
 	// Load HUD.
+	app.stage.addChild(journal);
 	app.stage.addChild(hud);
 	hud.distanceCounter.show();
 
