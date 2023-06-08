@@ -45,8 +45,17 @@ function gameLoop(delta: number): void {
 	hud.distanceCounter.updateCount(character.stepCount);
 }
 
+function updateContainerSize(): void {
+	let container: HTMLElement | null = document.getElementById("pixi-content");
+	if (typeof container !== "undefined" && container !== null) {
+		container.style.width = screenWidth.toString();
+		container.style.height = screenHeight.toString();
+	}
+}
+
 app.stage.sortableChildren = true;
 Keyboard.initialize();
+updateContainerSize();
 
 Assets.load([
 	// HUD
@@ -106,4 +115,6 @@ Assets.load([
 
 	app.stage.sortChildren();
 	app.ticker.add(gameLoop);
+
+	journal.moveTextBox();
 });
