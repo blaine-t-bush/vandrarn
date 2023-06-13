@@ -27,7 +27,13 @@ let hud = new Hud(app.stage.width, app.stage.height);
 let journal = new Journal(screenWidth, screenHeight);
 
 function gameLoop(delta: number): void {
-	if (Keyboard.state.has("ShiftLeft") && Keyboard.state.get("ShiftLeft") && Keyboard.state.has("ArrowRight") && Keyboard.state.get("ArrowRight")) {
+	if (journal.isOpen()) {
+		// Put keypresses into journal.text.
+		console.log(Keyboard.getCurrentLetter());
+
+		// Idle
+		character.playAnimation("idle");
+	} else if (Keyboard.state.has("ShiftLeft") && Keyboard.state.get("ShiftLeft") && Keyboard.state.has("ArrowRight") && Keyboard.state.get("ArrowRight")) {
 		// Run right
 		character.setState("runRight");
 		character.addSteps(delta);

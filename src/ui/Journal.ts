@@ -7,57 +7,80 @@ const buttonSize: number = 20;
 const buttonScreenSpacing: number = 8;
 const buttonJournalSpacing: number = 8;
 
-type Page = {
-  text: string;
-}
-
 export class Journal extends Container {
-  public static pageCount: number = 20;
-
-  public pages: Array<Page> = [];
-  public currentPageIndex: number = 0;
-
+  public text: string = "";
   public journal: Graphics;
-  public button: Button;
+  public openButton: Button;
+  public prevButton: Button;
+  public nextButton: Button;
 
   constructor(screenWidth: number, screenHeight: number) {
     super();
 
     this.zIndex = 1000;
 
-    // Fill journal with empty pages.
-    for (let i: number = 0; i < Journal.pageCount; i++) {
-      this.pages.push({
-        text: "",
-      })
-    }
-
     // Center it.
     this.position.set(screenWidth - journalWidth - buttonSize - buttonJournalSpacing - buttonScreenSpacing, buttonScreenSpacing);
 
     // Load in sprite.
     this.journal = new Graphics();
-    this.journal.beginFill(0xfff2f2);
+    this.journal.beginFill(0xfff8f8);
     this.journal.drawRect(0, 0, journalWidth, screenHeight - 2*buttonScreenSpacing);
     this.journal.position.set(0, 0);
     this.journal.visible = false;
     this.addChild(this.journal);
 
     // Button for opening/closing.
-    this.button = new Button(buttonSize, buttonSize);
-    this.button.position.set(journalWidth + buttonJournalSpacing, 0);
-    this.button.on('pointerup', () => {
+    this.openButton = this.createOpenButton();
+    this.addChild(this.openButton);
+
+    // Button for navigating pages.
+    this.prevButton = this.createPrevButton();
+    this.addChild(this.prevButton);
+    this.nextButton = this.createNextButton();
+    this.addChild(this.nextButton);
+  }
+
+  private createOpenButton(): Button {
+    let openButton = new Button(buttonSize, buttonSize);
+    openButton.position.set(journalWidth + buttonJournalSpacing, 0);
+    openButton.on('pointerup', () => {
       this.toggleJournal();
     });
-    this.button.cursor = "pointer";
-    this.addChild(this.button);
+    openButton.cursor = "pointer";
+
+    return openButton;
+  }
+
+  private createPrevButton(): Button {
+    let prevButton = new Button(buttonSize, buttonSize);
+    prevButton.position.set(buttonJournalSpacing/2, this.getJournalSizes().height - buttonSize + journalPadding/2);
+    prevButton.on('pointerup', () => {
+      console.log("prev");
+    });
+    prevButton.visible = false;
+    prevButton.cursor = "pointer";
+
+    return prevButton;
+  }
+
+  private createNextButton(): Button {
+    let nextButton = new Button(buttonSize, buttonSize);
+    nextButton.position.set(this.getJournalSizes().width - buttonSize + journalPadding/2, this.getJournalSizes().height - buttonSize + journalPadding/2);
+    nextButton.on('pointerup', () => {
+      console.log("next");
+    });
+    nextButton.visible = false;
+    nextButton.cursor = "pointer";
+
+    return nextButton;
   }
 
   public moveTextBox(): void {
-    let textBox: HTMLElement | null = document.getElementById("journal");
+    let textBox: HTMLElement | null = document.getElementById("journal-container");
     if (typeof textBox !== "undefined" && textBox !== null) {
       if (this.journal.visible) {
-        textBox.style.display = "block";
+        textBox.style.display = "flex";
       } else {
         textBox.style.display = "none";
       }
@@ -66,7 +89,7 @@ export class Journal extends Container {
       textBox.style.left = journalSizes.left.toString();
       textBox.style.top = journalSizes.top.toString();
       textBox.style.width = journalSizes.width.toString();
-      textBox.style.height = journalSizes.height.toString();
+      textBox.style.height = (journalSizes.height - buttonSize - journalPadding/2).toString();
     }
   }
 
@@ -81,18 +104,16 @@ export class Journal extends Container {
 
   public toggleJournal(): void {
     this.journal.visible = !this.journal.visible;
+    this.prevButton.visible = !this.prevButton.visible;
+    this.nextButton.visible = !this.nextButton.visible;
     this.moveTextBox();
   }
 
-  public updatePage(index: number, text: string): void {
-    this.pages[index].text = text;
+  public isOpen(): boolean {
+    return this.journal.visible;
   }
 
-  public advancePage(): void {
-    if (this.currentPageIndex > Journal.pageCount - 1) {
-      this.currentPageIndex = Journal.pageCount - 1;
-    } else {
-      this.currentPageIndex += 1;
-    }
+  public appendText(text: string): void {
+    this.text = text;
   }
 }
