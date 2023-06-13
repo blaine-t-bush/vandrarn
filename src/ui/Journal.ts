@@ -1,4 +1,4 @@
-import { Container, Graphics } from "pixi.js";
+import { Container, Graphics, Text } from "pixi.js";
 import { Button } from "./Button";
 
 const journalWidth: number = 200;
@@ -17,12 +17,13 @@ export class Journal extends Container {
   public openButton: Button;
   public prevButton: Button;
   public nextButton: Button;
+  public pageCount: Text;
   public pages: Array<Page>;
 
   public currentPageText: string = "";
   public currentPageIndex: number = 0;
 
-  public static maxPageCount: number = 20;
+  public static maxPageCount: number = 8;
 
   constructor(screenWidth: number, screenHeight: number) {
     super();
@@ -38,17 +39,23 @@ export class Journal extends Container {
     this.journal.drawRect(0, 0, journalWidth, screenHeight - 2*buttonScreenSpacing);
     this.journal.position.set(0, 0);
     this.journal.visible = false;
-    this.addChild(this.journal);
 
     // Button for opening/closing.
     this.openButton = this.createOpenButton();
     this.addChild(this.openButton);
 
-    // Button for navigating pages.
+    // Buttons for navigating pages.
     this.prevButton = this.createPrevButton();
-    this.addChild(this.prevButton);
+    this.journal.addChild(this.prevButton);
     this.nextButton = this.createNextButton();
-    this.addChild(this.nextButton);
+    this.journal.addChild(this.nextButton);
+
+    // Create page counter.
+    this.pageCount = this.createPageCount();
+    this.journal.addChild(this.pageCount);
+
+    // Add journal.
+    this.addChild(this.journal);
 
     // Create pages.
     this.pages = this.initPages();
@@ -56,7 +63,7 @@ export class Journal extends Container {
   }
 
   private createOpenButton(): Button {
-    let openButton = new Button(buttonSize, buttonSize);
+    let openButton: Button = new Button(buttonSize, buttonSize);
     openButton.position.set(journalWidth + buttonJournalSpacing, 0);
     openButton.on('pointerup', () => {
       this.toggleJournal();
@@ -67,10 +74,9 @@ export class Journal extends Container {
   }
 
   private createPrevButton(): Button {
-    let prevButton = new Button(buttonSize, buttonSize);
+    let prevButton: Button = new Button(buttonSize, buttonSize);
     prevButton.position.set(buttonJournalSpacing/2, this.getJournalSizes().height - buttonSize + journalPadding/2);
     prevButton.on('pointerup', () => {
-      console.log("prev");
       this.changePage(this.currentPageIndex-1);
     });
     prevButton.visible = false;
@@ -80,10 +86,9 @@ export class Journal extends Container {
   }
 
   private createNextButton(): Button {
-    let nextButton = new Button(buttonSize, buttonSize);
+    let nextButton: Button = new Button(buttonSize, buttonSize);
     nextButton.position.set(this.getJournalSizes().width - buttonSize + journalPadding/2, this.getJournalSizes().height - buttonSize + journalPadding/2);
     nextButton.on('pointerup', () => {
-      console.log("next");
       this.changePage(this.currentPageIndex+1);
     });
     nextButton.visible = false;
@@ -92,10 +97,22 @@ export class Journal extends Container {
     return nextButton;
   }
 
+  private createPageCount(): Text {
+    let pageCount: Text = new Text('0', {
+      fontFamily: 'Arial',
+      fontSize: '24',
+      fill: 0xff1010,
+      align: 'center'
+    });
+    pageCount.position.set(journalWidth/2, this.getJournalSizes().height - buttonSize + journalPadding/2)
+
+    return pageCount;
+  }
+
   private initPages(): Array<Page> {
     let pages: Array<Page> = [];
     for (let i: number = 0; i < Journal.maxPageCount; i++) {
-      pages.push({ index: i, text: i.toString()});
+      pages.push({ index: i, text: ""});
     }
 
     return pages;
@@ -129,8 +146,6 @@ export class Journal extends Container {
 
   public toggleJournal(): void {
     this.journal.visible = !this.journal.visible;
-    this.prevButton.visible = !this.prevButton.visible;
-    this.nextButton.visible = !this.nextButton.visible;
     this.moveTextBox();
   }
 
@@ -155,13 +170,22 @@ export class Journal extends Container {
   }
 
   public changePageIndex(index: number) {
-    if (index >= Journal.maxPageCount) {
+    this.nextButton.visible = true;
+    this.prevButton.visible = true;
+
+    if (index >= Journal.maxPageCount - 1) {
       this.currentPageIndex = Journal.maxPageCount - 1;
+      this.nextButton.visible = false;
     } else if (index <= 0) {
       this.currentPageIndex = 0;
+      this.prevButton.visible = false;
     } else {
+      this.nextButton.visible = true;
+      this.prevButton.visible = true;
       this.currentPageIndex = index;
     }
+
+    this.pageCount.text = (this.currentPageIndex + 1).toString();
   }
 
   public changePageText(): void {
