@@ -35,7 +35,7 @@ export class Journal extends Container {
 
     // Load in sprite.
     this.journal = new Graphics();
-    this.journal.beginFill(0xfff8f8);
+    this.journal.beginFill(0xf1dbc9);
     this.journal.drawRect(0, 0, journalWidth, screenHeight - 2*buttonScreenSpacing);
     this.journal.position.set(0, 0);
     this.journal.visible = false;
@@ -63,7 +63,7 @@ export class Journal extends Container {
   }
 
   private createOpenButton(): Button {
-    let openButton: Button = new Button(buttonSize, buttonSize);
+    let openButton: Button = new Button(buttonSize, buttonSize, 0xe09c60);
     openButton.position.set(journalWidth + buttonJournalSpacing, 0);
     openButton.on('pointerup', () => {
       this.toggleJournal();
@@ -74,7 +74,7 @@ export class Journal extends Container {
   }
 
   private createPrevButton(): Button {
-    let prevButton: Button = new Button(buttonSize, buttonSize);
+    let prevButton: Button = new Button(buttonSize, buttonSize, 0xe09c60);
     prevButton.position.set(buttonJournalSpacing/2, this.getJournalSizes().height - buttonSize + journalPadding/2);
     prevButton.on('pointerup', () => {
       this.changePage(this.currentPageIndex-1);
@@ -86,7 +86,7 @@ export class Journal extends Container {
   }
 
   private createNextButton(): Button {
-    let nextButton: Button = new Button(buttonSize, buttonSize);
+    let nextButton: Button = new Button(buttonSize, buttonSize, 0xe09c60);
     nextButton.position.set(this.getJournalSizes().width - buttonSize + journalPadding/2, this.getJournalSizes().height - buttonSize + journalPadding/2);
     nextButton.on('pointerup', () => {
       this.changePage(this.currentPageIndex+1);
@@ -101,7 +101,7 @@ export class Journal extends Container {
     let pageCount: Text = new Text('0', {
       fontFamily: 'Arial',
       fontSize: '24',
-      fill: 0xff1010,
+      fill: 0x8a725f,
       align: 'center'
     });
     pageCount.position.set(journalWidth/2, this.getJournalSizes().height - buttonSize + journalPadding/2)
