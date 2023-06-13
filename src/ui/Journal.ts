@@ -7,12 +7,22 @@ const buttonSize: number = 20;
 const buttonScreenSpacing: number = 8;
 const buttonJournalSpacing: number = 8;
 
+type Page = {
+  index: number;
+  text: string;
+}
+
 export class Journal extends Container {
-  public text: string = "";
   public journal: Graphics;
   public openButton: Button;
   public prevButton: Button;
   public nextButton: Button;
+  public pages: Array<Page>;
+
+  public currentPageText: string = "";
+  public currentPageIndex: number = 0;
+
+  public static maxPageCount: number = 20;
 
   constructor(screenWidth: number, screenHeight: number) {
     super();
@@ -39,6 +49,10 @@ export class Journal extends Container {
     this.addChild(this.prevButton);
     this.nextButton = this.createNextButton();
     this.addChild(this.nextButton);
+
+    // Create pages.
+    this.pages = this.initPages();
+    this.changePage(0);
   }
 
   private createOpenButton(): Button {
@@ -57,6 +71,7 @@ export class Journal extends Container {
     prevButton.position.set(buttonJournalSpacing/2, this.getJournalSizes().height - buttonSize + journalPadding/2);
     prevButton.on('pointerup', () => {
       console.log("prev");
+      this.changePage(this.currentPageIndex-1);
     });
     prevButton.visible = false;
     prevButton.cursor = "pointer";
@@ -69,11 +84,21 @@ export class Journal extends Container {
     nextButton.position.set(this.getJournalSizes().width - buttonSize + journalPadding/2, this.getJournalSizes().height - buttonSize + journalPadding/2);
     nextButton.on('pointerup', () => {
       console.log("next");
+      this.changePage(this.currentPageIndex+1);
     });
     nextButton.visible = false;
     nextButton.cursor = "pointer";
 
     return nextButton;
+  }
+
+  private initPages(): Array<Page> {
+    let pages: Array<Page> = [];
+    for (let i: number = 0; i < Journal.maxPageCount; i++) {
+      pages.push({ index: i, text: i.toString()});
+    }
+
+    return pages;
   }
 
   public moveTextBox(): void {
@@ -113,7 +138,37 @@ export class Journal extends Container {
     return this.journal.visible;
   }
 
-  public appendText(text: string): void {
-    this.text = text;
+  public updatePageText(text: string): void {
+    this.pages[this.currentPageIndex].text = text;
+  }
+
+  public changePage(index: number): void {
+    // Make sure current page is updated.
+    let textBoxInput: HTMLInputElement | null = document.getElementById("journal") as HTMLInputElement;
+    if (typeof textBoxInput !== "undefined" && textBoxInput !== null) {
+      this.updatePageText(textBoxInput.value);
+    }
+
+    // Move to desired page.
+    this.changePageIndex(index);
+    this.changePageText();
+  }
+
+  public changePageIndex(index: number) {
+    if (index >= Journal.maxPageCount) {
+      this.currentPageIndex = Journal.maxPageCount - 1;
+    } else if (index <= 0) {
+      this.currentPageIndex = 0;
+    } else {
+      this.currentPageIndex = index;
+    }
+  }
+
+  public changePageText(): void {
+    this.currentPageText = this.pages[this.currentPageIndex].text;
+    let textBoxInput: HTMLInputElement | null = document.getElementById("journal") as HTMLInputElement;
+    if (typeof textBoxInput !== "undefined" && textBoxInput !== null) {
+      textBoxInput.value = this.currentPageText;
+    }
   }
 }
