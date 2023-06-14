@@ -1,8 +1,8 @@
 import { Application, Assets } from 'pixi.js'
 import { Character } from './Character'
-import { Hud } from './hud/Hud'
+import { DistanceCounter } from './ui/DistanceCounter'
 import { Keyboard } from './Keyboard'
-import { WinterForest } from './level/WinterForest'
+import { DarkForest } from './level/DarkForest'
 import { Scene } from './Scene'
 import { Journal } from './ui/Journal'
 
@@ -20,20 +20,14 @@ const app = new Application({
 	height: screenHeight
 });
 
-let level = new WinterForest();
+let level = new DarkForest();
 let character = new Character(characterHorizontalOffset, screenHeight-level.groundOffset, 6);
 let scenes: Array<Scene> = [];
-let hud = new Hud(app.stage.width, app.stage.height);
 let journal = new Journal(screenWidth, screenHeight);
+let distanceCounter = new DistanceCounter();
 
 function gameLoop(delta: number): void {
-	if (journal.isOpen()) {
-		// Put keypresses into journal.text.
-		console.log(Keyboard.getCurrentLetter());
-
-		// Idle
-		character.playAnimation("idle");
-	} else if (Keyboard.state.has("ShiftLeft") && Keyboard.state.get("ShiftLeft") && Keyboard.state.has("ArrowRight") && Keyboard.state.get("ArrowRight")) {
+	if (Keyboard.state.has("ShiftLeft") && Keyboard.state.get("ShiftLeft") && Keyboard.state.has("ArrowRight") && Keyboard.state.get("ArrowRight")) {
 		// Run right
 		character.setState("runRight");
 		character.addSteps(delta);
@@ -48,7 +42,7 @@ function gameLoop(delta: number): void {
 		character.playAnimation("idle");
 	}
 
-	hud.distanceCounter.updateCount(character.stepCount);
+	distanceCounter.updateText(character.stepCount);
 }
 
 function updateContainerSize(): void {
@@ -64,8 +58,6 @@ Keyboard.initialize();
 updateContainerSize();
 
 Assets.load([
-	// HUD
-	"hud/GUI_label_2x.png",
 	// Backgrounds
 	"backgrounds/dark_forest/layer_0000.png",
 	"backgrounds/dark_forest/layer_0001.png",
@@ -116,8 +108,7 @@ Assets.load([
 
 	// Load HUD.
 	app.stage.addChild(journal);
-	app.stage.addChild(hud);
-	hud.distanceCounter.show();
+	app.stage.addChild(distanceCounter);
 
 	app.stage.sortChildren();
 	app.ticker.add(gameLoop);

@@ -40,24 +40,20 @@ export class Journal extends Container {
     this.journal.position.set(0, 0);
     this.journal.visible = false;
 
-    // Button for opening/closing.
+    // Create properties.
     this.openButton = this.createOpenButton();
-    this.addChild(this.openButton);
-
-    // Buttons for navigating pages.
     this.prevButton = this.createPrevButton();
-    this.journal.addChild(this.prevButton);
     this.nextButton = this.createNextButton();
-    this.journal.addChild(this.nextButton);
-
-    // Create page counter.
     this.pageCount = this.createPageCount();
+    
+    // Add children.
+    this.addChild(this.openButton);
+    this.addChild(this.journal);
+    this.journal.addChild(this.prevButton);
+    this.journal.addChild(this.nextButton);
     this.journal.addChild(this.pageCount);
 
-    // Add journal.
-    this.addChild(this.journal);
-
-    // Create pages.
+    // Create page data.
     this.pages = this.initPages();
     this.changePage(0);
   }
